@@ -1,0 +1,294 @@
+/* ==========================================================================
+   CRM-форма Битрикс24 (форма №7) в дизайне storyevent.ru
+   --------------------------------------------------------------------------
+   Селекторы — из статьи Битрикс24 «Как изменить дизайн CRM-формы с помощью
+   CSS» (helpdesk.bitrix24.ru/open/27965934/). У стилей Битрикса высокий
+   приоритет, поэтому !important у каждого свойства — так советует сама статья.
+   Всё завязано на обёртку .story-b24, чтобы не задеть ничего вне формы.
+
+   Контексты (модификатор на обёртке):
+     .story-b24--popup    — поп-ап «Запросить мероприятие»
+     .story-b24--contact  — блок «Свяжитесь с нами» (подписи капсом, как было)
+     .story-b24--ny       — новогодний лендинг, модалка «Перезвоните мне»
+   ========================================================================== */
+
+.story-b24 {
+	--sb-ink: #2D2B2C;
+	--sb-taupe: #A0958C;
+	--sb-mist: #C8CCC9;
+	--sb-sage: #8A9691;
+	--sb-radius: 12px;
+	--sb-field-h: 50px;
+	min-height: 360px; /* место под форму, пока грузится скрипт — без скачка вёрстки */
+	padding-top: 10px; /* подпись первого поля поднимается над рамкой — не даём ей налезть на текст выше */
+}
+
+/* --- шрифт и каркас: форма встраивается в нашу карточку без своей рамки --- */
+.story-b24 .b24-form,
+.story-b24 .b24-form * {
+	font-family: 'Inter', sans-serif !important;
+}
+.story-b24 .b24-form-wrapper {
+	max-width: none !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+}
+.story-b24 .b24-form-border-bottom { border-bottom: 0 !important; }
+.story-b24 .b24-form-padding-side {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.story-b24 .b24-form-content { padding-top: 0 !important; padding-bottom: 0 !important; }
+
+/* заголовок у нас свой — в модалке и в секции; заголовок формы Битрикса прячем */
+.story-b24 .b24-form-header { display: none !important; }
+
+/* --- поля --- */
+.story-b24 .b24-form-field { margin-bottom: 14px !important; }
+.story-b24 .b24-form-control-string .b24-form-control,
+.story-b24 .b24-form-control-list .b24-form-control,
+.story-b24 .b24-form-control-text .b24-form-control,
+.story-b24 .b24-form-control-select .field-item,
+.story-b24 .b24-form-control-date .b24-form-control {
+	height: var(--sb-field-h) !important;
+	padding-left: 14px !important;
+	padding-right: 14px !important;
+	background: #fff !important;
+	border: 1px solid var(--sb-mist) !important;
+	border-radius: var(--sb-radius) !important;
+	box-shadow: none !important;
+	transition: border-color .2s !important;
+}
+.story-b24 .b24-form-control-text textarea.b24-form-control { height: auto !important; min-height: 96px !important; }
+.story-b24 .b24-form-control:hover { border-color: var(--sb-sage) !important; }
+.story-b24 .b24-form-control:focus {
+	border-color: var(--sb-ink) !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+.story-b24 .b24-form-control {
+	font-size: 15px !important;
+	color: var(--sb-ink) !important;
+}
+
+/* подпись внутри поля (плавающая) */
+.story-b24 .b24-form-control-label {
+	font-size: 14px !important;
+	line-height: var(--sb-field-h) !important;
+	color: var(--sb-sage) !important;
+	opacity: 1 !important;
+	padding-left: 14px !important;
+	padding-right: 14px !important;
+}
+.story-b24 .b24-form-control-select-label,
+.story-b24 .b24-form-control:focus + .b24-form-control-label,
+.story-b24 .b24-form-control-not-empty + .b24-form-control-label {
+	font-size: 11px !important;
+	line-height: 1.2 !important;
+	top: -7px !important;
+	color: var(--sb-ink) !important;
+	background: #fff !important;
+	padding: 0 6px !important;
+	left: 9px !important;
+	right: auto !important;       /* иначе подложка перекрывает всю верхнюю рамку поля */
+	width: auto !important;
+	max-width: calc(100% - 24px) !important;
+	letter-spacing: .02em !important;
+}
+.story-b24 .b24-form-control-required { color: #ef4444 !important; }
+
+/* ошибка валидации */
+.story-b24 .b24-form-control-alert .b24-form-control { border-color: #c0392b !important; }
+.story-b24 .b24-form-control-alert-message {
+	background: #c0392b !important;
+	border-radius: 8px !important;
+	font-size: 12px !important;
+}
+
+/* иконки календаря / списка — в тон */
+.story-b24 .b24-form-control-icon-after::after { opacity: .55 !important; }
+
+/* --- календарь поля «Дата мероприятия» ---
+   Битрикс вешает календарь абсолютом поверх формы и делает его шире поля.
+   В прокручиваемой модалке он обрезается снизу и раздувает прокрутку пустым
+   местом. Ставим его в поток: раскрывается под полем на всю его ширину,
+   сдвигает остальные поля вниз, ничего не обрезается. */
+.story-b24 .b24-form-dropdown-container {
+	position: relative !important;
+	top: auto !important;
+	left: auto !important;
+	right: auto !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box !important;
+	margin-top: 8px !important;
+	background: #fff !important;
+	border: 1px solid var(--sb-mist) !important;
+	border-radius: var(--sb-radius) !important;
+	box-shadow: 0 10px 30px rgba(45, 43, 44, .10) !important;
+	overflow: hidden !important;
+}
+.story-b24 .vdpComponent,
+.story-b24 .vdpOuterWrap,
+.story-b24 .vdpInnerWrap {
+	width: 100% !important;
+	max-width: 100% !important;
+	background: transparent !important;
+	box-shadow: none !important;
+}
+.story-b24 .vdpInnerWrap { padding: 4px 8px 10px !important; }
+
+/* На телефоне Битрикс сам переводит календарь в «шторку» снизу экрана
+   (position: fixed, с заголовком и крестиком). Поднимаем её над плавающими
+   кнопками сайта (стрелка «наверх» и виджет связи, z-index 10001) —
+   иначе они закрывают правый столбец дат — и красим крестик в цвета сайта. */
+.story-b24 .b24-form-dropdown { z-index: 10050 !important; }
+.story-b24 .b24-form-dropdown-header .b24-window-close {
+	background-color: var(--sb-ink) !important;
+}
+.story-b24 .b24-form-dropdown-title {
+	color: var(--sb-ink) !important;
+	font-weight: 600 !important;
+}
+/* у Битрикса шапка с запасом снизу, под который заезжает строка дней недели;
+   делаем шапку компактной, дни недели — уже на белом */
+.story-b24 .vdpHeader {
+	background: #F4F1EC !important;
+	margin: -4px -8px 6px !important;
+	padding-bottom: 0 !important;
+}
+.story-b24 .vdpPeriodControl > button {
+	color: var(--sb-ink) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+.story-b24 .vdpArrow { top: 0 !important; height: 100% !important; } /* стрелки по центру шапки */
+.story-b24 .vdpArrowPrev::after { border-right-color: var(--sb-ink) !important; }
+.story-b24 .vdpArrowNext::after { border-left-color: var(--sb-ink) !important; }
+.story-b24 .vdpHeadCellContent {
+	color: var(--sb-sage) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+}
+.story-b24 .vdpCellContent {
+	color: var(--sb-ink) !important;
+	font-size: 14px !important;
+	transition: background .15s, color .15s !important;
+}
+.story-b24 .vdpCell.outOfRange .vdpCellContent { color: var(--sb-mist) !important; }
+.story-b24 .vdpCell.today .vdpCellContent {
+	color: var(--sb-taupe) !important;
+	font-weight: 700 !important;
+}
+.story-b24 .vdpCell.selectable:hover .vdpCellContent {
+	background: #F4F1EC !important;
+	color: var(--sb-ink) !important;
+}
+.story-b24 .vdpCell.selected .vdpCellContent,
+.story-b24 .vdpCell.selected:hover .vdpCellContent {
+	background: var(--sb-ink) !important;
+	color: #fff !important;
+}
+
+/* --- согласие --- */
+.story-b24 .b24-form-control-agreement,
+.story-b24 .b24-form-control-bool { margin-top: 6px !important; }
+.story-b24 .b24-form-control-agreement input[type="checkbox"],
+.story-b24 .b24-form-control-bool input[type="checkbox"] {
+	width: 16px !important;
+	height: 16px !important;
+	accent-color: var(--sb-ink) !important;
+}
+.story-b24 .b24-form-control-desc {
+	font-size: 12px !important;
+	line-height: 1.45 !important;
+	color: var(--sb-ink) !important;
+	opacity: .85 !important;
+}
+/* Битрикс делает ссылкой весь текст согласия (открывает его во всплывающем
+   окне), поэтому ссылку оформляем как обычный текст с тонким подчёркиванием */
+.story-b24 .b24-form-control-desc a,
+.story-b24 .b24-form-field-agreement-link {
+	color: var(--sb-ink) !important;
+	font-size: 12px !important;
+	font-weight: 400 !important;
+	text-decoration: underline !important;
+	text-decoration-color: rgba(45, 43, 44, .3) !important;
+	text-underline-offset: 3px !important;
+}
+.story-b24 .b24-form-field-agreement-link:hover { text-decoration-color: var(--sb-ink) !important; }
+
+/* --- кнопка --- */
+.story-b24 .b24-form-btn-container { margin-top: 18px !important; padding: 0 !important; }
+.story-b24 .b24-form-btn {
+	height: 52px !important;
+	background: var(--sb-ink) !important;
+	border: 1px solid var(--sb-ink) !important;
+	border-radius: var(--sb-radius) !important;
+	color: #fff !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	box-shadow: 0 4px 14px rgba(45, 43, 44, .25) !important;
+	transition: opacity .2s, box-shadow .3s !important;
+}
+.story-b24 .b24-form-btn:hover {
+	opacity: .9 !important;
+	box-shadow: 0 8px 25px rgba(45, 43, 44, .35) !important;
+}
+/* «Отправить ещё раз» в состоянии ошибки — контурная */
+.story-b24 .b24-form-btn-border {
+	background: transparent !important;
+	color: var(--sb-ink) !important;
+	box-shadow: none !important;
+}
+
+/* --- состояния: загрузка, «Отправлено!», ошибка --- */
+.story-b24 .b24-form-state-container .b24-form-state { background: #fff !important; }
+.story-b24 .b24-form-state-text p {
+	color: var(--sb-ink) !important;
+	font-size: 16px !important;
+	font-weight: 500 !important;
+}
+.story-b24 .b24-form-success-icon { filter: grayscale(1) brightness(.35) !important; }
+.story-b24 .b24-form-loader-icon path,
+.story-b24 .b24-form-loader-icon circle { stroke: var(--sb-taupe) !important; }
+
+/* --- подпись «Заряжено Битрикс24»: не прячем, но убираем с первого плана --- */
+.story-b24 .b24-form-sign {
+	background: transparent !important;
+	padding: 10px 0 0 !important;
+	opacity: .45 !important;
+	transform: scale(.9);
+	transform-origin: center top;
+}
+.story-b24 .b24-form-sign-abuse { display: none !important; }
+.story-b24 .b24-form-sign-bx,
+.story-b24 .b24-form-sign-24 { color: inherit !important; }
+
+/* ==========================================================================
+   Контексты
+   ========================================================================== */
+
+/* Блок «Свяжитесь с нами»: как у старой формы — кнопка капсом с разрядкой */
+.story-b24--contact .b24-form-btn {
+	font-size: 14px !important;
+	letter-spacing: .1em !important;
+	text-transform: uppercase !important;
+	border-radius: 8px !important;
+	box-shadow: none !important;
+}
+.story-b24--contact .b24-form-control-string .b24-form-control,
+.story-b24--contact .b24-form-control-date .b24-form-control { border-radius: 8px !important; }
+
+/* Поп-ап: форма узкая, отступы плотнее */
+.story-b24--popup { min-height: 420px; }
+
+/* Новогодний лендинг: фон модалки кремовый, поля на белом, радиусы лендинга */
+.story-b24--ny .b24-form-state-container .b24-form-state { background: #FAF8F5 !important; }
+.story-b24--ny .b24-form-control-select-label,
+.story-b24--ny .b24-form-control:focus + .b24-form-control-label,
+.story-b24--ny .b24-form-control-not-empty + .b24-form-control-label { background: #fff !important; }
+.story-b24--ny .b24-form-btn { font-weight: 500 !important; box-shadow: none !important; }
