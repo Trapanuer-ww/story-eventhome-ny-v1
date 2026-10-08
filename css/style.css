@@ -150,7 +150,7 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 
 /* ---------- Hero ---------- */
 .hero{
-  position:relative; min-height:100vh; display:flex; align-items:flex-end;
+  position:relative; min-height:100vh; min-height:calc(100svh - clamp(110px, 17svh, 170px)); display:flex; align-items:flex-end; /* на 1/6 ниже окна: следующий блок виден снизу */
   color:var(--white); overflow:hidden; background:var(--ink);
 }
 .hero-media{ position:absolute; inset:0; z-index:0; }
@@ -183,6 +183,9 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 .hero-actions{ display:flex; flex-wrap:wrap; gap:14px; margin-top:32px; }
 .hero-microcopy{ margin-top:16px; font-size:13.5px; color:rgba(255,255,255,.72); max-width:480px; }
 
+@media (max-height:820px) and (min-width:900px){
+  .hero-content{ padding-top:calc(var(--header-h) + 20px); padding-bottom:52px; }
+}
 /* ---------- Hero intro (Story reveal) ---------- */
 .hero-intro{
   position:absolute; inset:0; z-index:3;
@@ -289,8 +292,9 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 .sc--dark .eyebrow::before{ background:rgba(255,255,255,.5); }
 
 /* Первая сцена выезжает «листом» на нижний край hero — приоткрывает следующий блок */
-.sc--sheet{ z-index:3; margin-top:-44px; padding-top:calc(var(--sc-pad) + 14px); border-radius:28px 28px 0 0; }
+.sc--sheet{ z-index:3; margin-top:-72px; padding-top:calc(var(--sc-pad) + 14px); border-radius:28px 28px 0 0; }
 
+@media (max-height:820px) and (min-width:900px){ .sc--sheet{ margin-top:-40px; } }
 .sc-head{
   display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);
   gap:14px clamp(28px, 4vw, 64px); align-items:end;
