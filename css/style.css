@@ -109,10 +109,11 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 .site-header .logo{ display:flex; align-items:center; gap:10px; flex-shrink:0; grid-column:2; grid-row:1; justify-self:center; }
 .site-header .logo img{ height:40px; width:auto; filter:brightness(0) invert(1); transition:filter .35s var(--ease); }
 .site-header.is-scrolled .logo img{ filter:none; }
+
 .main-nav{ display:none; grid-column:1; grid-row:1; justify-self:start; min-width:0; }
 .main-nav ul{ display:flex; gap:10px; flex-wrap:nowrap; }
 .nav-link{
-  padding:8px 14px; font-size:14.5px; font-weight:400; color:rgba(255,255,255,.95);
+  padding:8px 14px; font-size:13px; font-weight:400; color:rgba(255,255,255,.95);
   border:1px solid rgba(255,255,255,.55); border-radius:var(--radius-btn); background:transparent;
   white-space:nowrap;
   transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
@@ -120,9 +121,10 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 .nav-link:hover{ background:rgba(255,255,255,.14); border-color:var(--white); }
 .site-header.is-scrolled .nav-link{ color:var(--ink-70); border-color:rgba(45,43,44,.3); }
 .site-header.is-scrolled .nav-link:hover{ background:rgba(45,43,44,.06); color:var(--ink); border-color:var(--ink); }
+
 .header-right{ display:flex; align-items:center; gap:10px; flex-shrink:0; grid-column:3; grid-row:1; justify-self:end; }
 .phone-link{
-  display:none; align-items:center; gap:8px; font-size:15px; font-weight:500;
+  display:none; align-items:center; gap:8px; font-size:13.5px; font-weight:500;
   color:var(--white); padding:9px 14px; border-radius:var(--radius-btn); white-space:nowrap;
   border:1px solid rgba(255,255,255,.55); background:rgba(255,255,255,.12);
   transition:color .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease);
@@ -131,6 +133,73 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 .site-header.is-scrolled .phone-link{ color:var(--ink); border-color:rgba(45,43,44,.25); background:rgba(45,43,44,.05); }
 .site-header.is-scrolled .phone-link:hover{ background:rgba(45,43,44,.1); }
 .phone-link svg{ width:16px; height:16px; flex-shrink:0; }
+
+/* ---------- 3. Мобильное меню (гамбургер) ----------
+   Ниже 1180px навигация .main-nav в прототипе просто скрыта, и перейти
+   к разделам с телефона было нельзя. Кнопка встаёт в пустую левую колонку
+   сетки шапки (логотип по центру, «Перезвоните мне» справа), по нажатию под
+   шапкой раскрывается панель с теми же пунктами и телефоном. */
+.nav-burger{
+  grid-column:1; grid-row:1; justify-self:start;
+  display:inline-flex; flex-direction:column; justify-content:center; gap:5px;
+  width:44px; height:44px; padding:0 12px;
+  border:1px solid rgba(255,255,255,.55); border-radius:var(--radius-btn);
+  background:transparent; cursor:pointer;
+  transition:background .25s var(--ease), border-color .25s var(--ease);
+}
+.nav-burger span{
+  display:block; width:100%; height:1.5px; border-radius:2px; background:var(--white);
+  transition:transform .25s var(--ease), opacity .2s var(--ease), background .25s var(--ease);
+}
+.nav-burger:hover{ background:rgba(255,255,255,.14); }
+.site-header.is-scrolled .nav-burger,
+.site-header.menu-open .nav-burger{ border-color:rgba(45,43,44,.3); }
+.site-header.is-scrolled .nav-burger:hover,
+.site-header.menu-open .nav-burger:hover{ background:rgba(45,43,44,.06); }
+.site-header.is-scrolled .nav-burger span,
+.site-header.menu-open .nav-burger span{ background:var(--ink); }
+.nav-burger[aria-expanded="true"] span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+.nav-burger[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+.nav-burger[aria-expanded="true"] span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+
+/* открытое меню: шапка светлая, как после прокрутки */
+.site-header.menu-open{
+  background:rgba(250,248,245,.97);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  box-shadow:0 1px 0 rgba(45,43,44,.08);
+}
+.site-header.menu-open .logo img{ filter:none; }
+
+.mobile-nav{
+  position:absolute; top:100%; left:0; right:0;
+  max-height:calc(100vh - var(--header-h)); overflow-y:auto;
+  padding:4px var(--gutter) 22px;
+  background:#FAF8F5; border-top:1px solid rgba(45,43,44,.08);
+  box-shadow:0 22px 30px -20px rgba(45,43,44,.35);
+}
+.mobile-nav ul{ list-style:none; margin:0; padding:0; }
+.mobile-nav li a{
+  display:block; padding:15px 0; font-size:17px; color:var(--ink);
+  border-bottom:1px solid rgba(45,43,44,.08);
+}
+.mobile-nav li a:hover{ color:var(--taupe); }
+.mobile-nav-phone{
+  display:inline-flex; align-items:center; gap:10px; margin-top:18px;
+  font-size:16px; font-weight:500; color:var(--ink);
+}
+.mobile-nav-phone svg{ width:18px; height:18px; flex-shrink:0; }
+
+@media (min-width:1180px){
+  .nav-burger, .mobile-nav{ display:none !important; }
+}
+
+/* burger-right: гамбургер справа, как в основной шапке сайта; «Перезвоните мне»
+   уходит в левую колонку. Только ниже 1180px — на десктопе своя раскладка. */
+@media (max-width:1179.98px){
+  .site-header .nav-burger{ grid-column:3; justify-self:end; }
+  .site-header .header-right{ grid-column:1; justify-self:start; }
+}
+
 /* ---------- Hero ---------- */
 .hero{
   position:relative; min-height:100vh; min-height:calc(100svh - clamp(110px, 17svh, 170px)); display:flex; align-items:flex-end; /* на 1/6 ниже окна: следующий блок виден снизу */

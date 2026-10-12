@@ -226,6 +226,11 @@
   /* ---------------------------------------------------------------------- */
   var B24_FIELD_TYPE = "DEAL_UF_CRM_1779793213603"; // «Тип мероприятия» в форме №7
   var FORM_PRESETS = {
+    callback: {
+      title: "Перезвоните мне",
+      sub: "Оставьте имя и телефон — перезвоним и ответим на вопросы о площадке.",
+      type: "Новогодний корпоратив, перезвонить"
+    },
     viewing: {
       title: "Запись на просмотр",
       sub: "Оставьте имя и телефон — согласуем удобное время, чтобы показать особняк.",
@@ -332,4 +337,41 @@
     if (e.key === "Escape" && overlay.classList.contains("is-open")) closeForm();
   });
 
+})();
+
+/* ==========================================================================
+   Мобильное меню (гамбургер) — как на storyevent.ru/novogodnij-korporativ/
+   Открывается кнопкой #navBurger, закрывается повторным нажатием, выбором
+   пункта, кликом мимо шапки, Escape и при переходе на десктопную ширину.
+   ========================================================================== */
+(function () {
+  "use strict";
+  var header = document.getElementById("siteHeader");
+  var btn = document.getElementById("navBurger");
+  var panel = document.getElementById("mobileNav");
+  if (!header || !btn || !panel) return;
+
+  function setOpen(open) {
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Закрыть меню" : "Меню");
+    header.classList.toggle("menu-open", open);
+  }
+
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    setOpen(panel.hidden);
+  });
+  panel.addEventListener("click", function (e) {
+    if (e.target.closest && e.target.closest("a")) setOpen(false);
+  });
+  document.addEventListener("click", function (e) {
+    if (!panel.hidden && !header.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !panel.hidden) { setOpen(false); btn.focus(); }
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth >= 1180 && !panel.hidden) setOpen(false);
+  });
 })();
