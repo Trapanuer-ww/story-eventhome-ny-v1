@@ -504,3 +504,8 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 .story-b24 .b24-form-sign-text,
 .story-b24 .b24-form-control-required{ font-size:14px !important; }
 .story-b24 .b24-form-sign-text{ color:var(--ink-70) !important; }
+
+/* ---------- Ссылка на портфолио в блоке «Пространство» ---------- */
+.sp-more{ margin-top:clamp(18px, 3svh, 28px); }
+.sp-link{ font-size:17px; font-weight:500; color:var(--ink); text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:6px; }
+.sp-link:hover{ text-decoration-color:var(--taupe-dark); }
