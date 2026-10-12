@@ -425,6 +425,31 @@ h1,h2,h3{ font-family:var(--font-body); font-weight:300; }
 .cat-photos img{ width:100%; height:auto; aspect-ratio:4/5; object-fit:cover; border-radius:var(--radius); }
 .cat-photos img:nth-child(2){ transform:translateY(clamp(12px, 3svh, 28px)); }
 
+/* ---------- SEO-блок «Как выбрать площадку»: абзац + «Читать далее» (нативный details) ---------- */
+.gd-head{ max-width:760px; }
+.gd-intro{ margin-top:16px; font-size:15.5px; line-height:1.65; color:var(--ink-70); }
+.gd-more{ margin-top:clamp(16px, 2.6svh, 24px); }
+.gd-more summary{
+  display:inline-flex; align-items:center; gap:8px; cursor:pointer; list-style:none;
+  padding:11px 22px; border:1px solid var(--ink-50); border-radius:var(--radius-btn);
+  font-size:14px; color:var(--ink); transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+}
+.gd-more summary::-webkit-details-marker{ display:none; }
+.gd-more summary:hover{ background:var(--ink); color:var(--white); border-color:var(--ink); }
+.gd-more summary:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+.gd-close{ display:none; }
+.gd-more[open] .gd-open{ display:none; }
+.gd-more[open] .gd-close{ display:inline; }
+.gd-body{ margin-top:clamp(22px, 4svh, 36px); columns:2; column-gap:clamp(32px, 5vw, 72px); }
+.gd-body h3{ break-after:avoid; margin:0 0 8px; font-family:var(--font-display); font-weight:400; font-size:17px; line-height:1.3; color:var(--ink); }
+.gd-body p{ margin:0 0 22px; font-size:14.5px; line-height:1.65; color:var(--ink-70); break-inside:avoid-column; }
+.gd-body p + h3{ margin-top:0; }
+.gd-cta{ margin-bottom:0 !important; }
+@media (max-width:899px){
+  .gd-body{ columns:1; }
+  .gd-intro{ font-size:14.5px; }
+}
+
 /* ---------- Финал ---------- */
 .sc--final{ text-align:center; padding:calc(var(--sc-pad) * 1.4) 0; }
 .sc--final .eyebrow{ justify-content:center; }
